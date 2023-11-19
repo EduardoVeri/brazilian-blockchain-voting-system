@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import yaml
+
+# Open the config file and save it to config variable
+with open("config.yaml", "r") as yaml_file:
+    config = yaml.safe_load(yaml_file)
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -120,8 +126,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-EMAIL_ADDRESS = ''
-EMAIL_PASSWORD = ''
+EMAIL_ADDRESS = config['EMAIL_ADDRESS']
+EMAIL_PASSWORD = config['EMAIL_PASSWORD']
 TRANSACTIONS_PER_BLOCK = 1
 
 # PUZZLE
