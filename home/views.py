@@ -54,7 +54,8 @@ def send_otp(request):
     email_input = request.GET.get('email-id')
 
     # [success, result] = send_email_otp(email_input)
-    [success, result] = [True, '0']
+    [success, result] = send_email_otp(email_input)
+    # [success, result] = [True, '0']
 
     json = {'success': success}
     if success:
