@@ -60,7 +60,7 @@ $('#final-confirm').click( function(){
 
     $.ajax(
         {
-            type:'POST',
+            type:'GET',
             url: '/create-vote/',
             data: {'selected-party-id': selectedPartyID, 'private-key':privateKey},
             success: function(data){
