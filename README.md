@@ -33,9 +33,18 @@ send_email_private_key(request.session['email-id'], private_key)
 
 5. Locate `manage.py` file and run `python manage.py runserver` in the same directory.
 
-6. Locate the URL provided in the terminal and access that. by default it is [http://127.0.0.1:8000](http://127.0.0.1:8000).
+6. If a warning appear like this:
 
+   ```bash
+   You have 17 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+   Run 'python3 manage.py migrate' to apply them.
+   ```
 
+   then run `python manage.py migrate` in the same directory.
+
+7. Locate the URL provided in the terminal and access that. by default it is [http://127.0.0.1:8000](http://127.0.0.1:8000).
+
+8. To acess admin panel you need to create a superuser. For this run `python manage.py createsuperuser` in the same directory and follow the instructions.
 
 ## References
 
