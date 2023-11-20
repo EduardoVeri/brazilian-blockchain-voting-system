@@ -12,12 +12,16 @@
 
 <div class="authentication">
 
-    <span>Enter Your Aadhar Card Number (UIDAI Number)</span>
+    <span>Enter Your CPF Number</span>
     <br>
     <div class="input-section">
-        <input type="text" placeholder="xxxx xxxx xxxx" class="input-text" id="aadhar" autocomplete="off">
+        <input type="text" placeholder="xxx.xxx.xxx-xx" class="input-text" id="aadhar" autocomplete="off">
         <button type="submit" class="submit" onclick="submit_aadhar()">Authenticate</button>
     </div>
+    <div id="avisoNumeroInvalido" class="aviso-oculto">
+        <span id="textoAviso"></span>
+    </div>
+
 
 </div>
 

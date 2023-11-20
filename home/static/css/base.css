@@ -44,7 +44,7 @@ body{
     position: fixed;
     top: 0px;
     left: 0px;
-    height: 50px;
+    height: 100px;
     padding: 5px;
     padding-left: 0;
     display: flex;
@@ -60,7 +60,7 @@ body{
     display: flex;
     min-width: 170px;
     width: max-content;
-    padding-right: 3px;
+    padding-right: 12px;
     cursor: pointer;
 }
 
