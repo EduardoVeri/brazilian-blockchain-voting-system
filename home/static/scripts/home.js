@@ -1,7 +1,7 @@
 $(document).ready(function(){
     hide_loading();
     showAlert(
-        'Please Enter your Aadhar Card Number to Authenticate yourself in order to cast your pricelsess vote.',
+        'Please Enter your CPF Number to Authenticate yourself in order to cast your vote.',
         'rgba(201, 136, 255, 0.3)', 'rgb(102, 0, 128)');
     setTimeout(function(){
         $('.loading-div').css({
@@ -9,22 +9,53 @@ $(document).ready(function(){
             'top': '50px',
         });
     }, 1000);
+
+    $('#aadhar').on('input', function() {
+        let valor = $(this).val();
+    
+        valor = valor.replace(/\D/g, ""); // Remove caracteres não numéricos
+    
+        // Formatação do CPF
+        if (valor.length <= 6) {
+            valor = valor.replace(/(\d{3})(\d{1,3})?/, "$1.$2");
+        } else if (valor.length <= 9) {
+            valor = valor.replace(/(\d{3})(\d{3})(\d{1,3})?/, "$1.$2.$3");
+        } else {
+            valor = valor.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, "$1.$2.$3-$4");
+        }
+        // Permite apagar o ponto
+        if (valor.endsWith('.') || valor.endsWith('-')) {
+            valor = valor.slice(0, -1);
+        }        
+        $(this).val(valor); // Atualiza o valor no campo
+    
+        if(validateCPF(valor)) {
+            hideCpfAlert();
+        }
+        else {
+            showCpfAlert("Invalid CPF. Please enter a valid CPF Number.");
+        }
+    });
 })
 
-// Aadhar Validation on input
-$('#aadhar').on('input',function(event){
-    if($('#aadhar').val().length>12){
-        $('#aadhar').val(aadhar);
-    }
-    if( $.isNumeric( $('#aadhar').val() ) ){
-        aadhar = $('#aadhar').val();
-    }
-    else{
-        if($('#aadhar').val().length>0){
-            $('#aadhar').val(aadhar);
-        }
-    }
-});
+function validateCPF(numero) {
+    const cpfRegex = /^(\d{3}\.\d{3}\.\d{3}-\d{2})$/; // Regex para validar CPF (11 dígitos)
+
+    return cpfRegex.test(numero);
+}
+
+function showCpfAlert(mensagem) {
+    $("#avisoNumeroInvalido").addClass("alert");
+    $("#avisoNumeroInvalido").removeClass("aviso-oculto");
+    $("#textoAviso").text(mensagem);
+    
+}
+
+function hideCpfAlert() {
+    $("#textoAviso").text("");
+    $("#avisoNumeroInvalido").addClass("aviso-oculto");
+    $("#avisoNumeroInvalido").removeClass("alert");
+}
 
 // Authenticate aadhar no after button click
 function submit_aadhar() {
@@ -32,9 +63,9 @@ function submit_aadhar() {
     show_loading('Please wait, you are being authenticated.');
     $.ajax(
         {
-            type:"POST",
+            type:"GET",
             url: "/authentication/",
-            data: {'aadhar_no': $('#aadhar').val()},
+            data: {'aadhar_no': $('#aadhar').val().replace(/[.-]/g, "")},
             success: function( data )
             {
                 if(data.success){
@@ -63,6 +94,8 @@ function submit_aadhar() {
         }
     );
 }
+
+
 
 // Show short Details at top right corner after authentication
 function showShortDetails() {
