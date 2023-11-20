@@ -71,15 +71,24 @@ def send_otp(request):
 
 # -------- Verify email with provided otp ----------
 def verify_otp(request):
-
-    otp_input = request.GET.get('otp-input')
     json = {'success': False}
-    if otp_input == request.session['otp']:
+    
+    if(settings.DEBUG):
         voter = Voters.objects.get(uuid = request.session['uuid'])
-        voter.email = request.session['email-id']
+        voter.email = 'devmode@gmail.com'
         voter.save()
         json['success'] = True
         request.session['email-verified'] = True
+        
+    else:  
+        otp_input = request.GET.get('otp-input')
+        json = {'success': False}
+        if otp_input == request.session['otp']:
+            voter = Voters.objects.get(uuid = request.session['uuid'])
+            voter.email = request.session['email-id']
+            voter.save()
+            json['success'] = True
+            request.session['email-verified'] = True
 
     return JsonResponse(json)
 
