@@ -40,7 +40,7 @@ function hide_loading(){
     $('.loading-div').animate(
         {'opacity': '0'},
         {
-            duration: 1000,
+            duration: 2000,
             complete: function() {
                 $('.loading-div').hide();
                 $('.main-content').css('display', 'flex');
