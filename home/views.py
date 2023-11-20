@@ -308,37 +308,37 @@ def dummy_data_input(to_do):
     if to_do['createPoliticianParties']:
 
         parties = {
-            'bjp': {
-                'party_id': 'bjp',
-                'party_name': 'Bhartiya Janta Party (BJP)',
-                'party_logo': 'https://upload.wikimedia.org/wikipedia/en/thumb/1/1e/Bharatiya_Janata_Party_logo.svg/180px-Bharatiya_Janata_Party_logo.svg.png',
+            'pt': {
+                'party_id': 'pt',
+                'party_name': 'Partido dos Trabalhadores (PT)',
+                'party_logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Bandeira_partido_dos_trabalhadores.svg/640px-Bandeira_partido_dos_trabalhadores.svg.png',
                 'candidate_name': '',
                 'candidate_profile_pic': ''
                 },
-            'congress': {
-                'party_id': 'congress',
-                'party_name': 'Indian National Congress',
-                'party_logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Flag_of_the_Indian_National_Congress.svg/250px-Flag_of_the_Indian_National_Congress.svg.png',
+            'pl': {
+                'party_id': 'pl',
+                'party_name': 'Partido Liberal (PL)',
+                'party_logo': 'https://upload.wikimedia.org/wikipedia/commons/c/c3/Logo_do_Partido_Liberal_%28Brasil%29.png',
                 'candidate_name': '',
                 'candidate_profile_pic': ''
                 },
-            'bsp': {
-                'party_id': 'bsp',
-                'party_name': 'Bahujan Samaj Party',
-                'party_logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Elephant_Bahujan_Samaj_Party.svg/1200px-Elephant_Bahujan_Samaj_Party.svg.png',
+            'psdb': {
+                'party_id': 'psdb',
+                'party_name': 'Partido da Social Democracia Brasileira (PSDB)',
+                'party_logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/PSDB_2023.svg/640px-PSDB_2023.svg.png',
                 'candidate_name': '',
                 'candidate_profile_pic': ''
             },
-            'cpi': {
-                'party_id': 'cpi',
-                'party_name': 'Communist Party of India',
-                'party_logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/CPI-banner.svg/200px-CPI-banner.svg.png',
+            'psol': {
+                'party_id': 'psol',
+                'party_name': 'Partido Socialismo e Liberdade (PSOL)',
+                'party_logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Psol_ziraldo_%28cropped%29.png/640px-Psol_ziraldo_%28cropped%29.png',
                 'candidate_name': '',
                 'candidate_profile_pic': ''
             },
-            'nota': {
-                'party_id': 'nota',
-                'party_name': 'None of the above (NOTA)',
+            'bn': {
+                'party_id': 'bn',
+                'party_name': 'Brancos e Nulos (BN)',
                 'party_logo': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/NOTA_Option_Logo.png/220px-NOTA_Option_Logo.png',
                 'candidate_name': '',
                 'candidate_profile_pic': ''
