@@ -269,6 +269,17 @@ def create_block():
 
     return data
 
+def generate_cpf():
+    cpf = [random.randint(0, 9) for _ in range(9)]
+    
+    for _ in range(2):
+        val = sum([(len(cpf) + 1 - i) * v for i, v in enumerate(cpf)]) % 11
+        cpf.append(11 - val if val > 1 else 0)
+    
+    cpf_number = int(''.join(map(str, cpf)))
+    return cpf_number
+    return '%s%s%s.%s%s%s.%s%s%s-%s%s' % tuple(cpf)
+
 def dummy_data_input(to_do):
 
     ts_data['progress'] = True
@@ -336,6 +347,9 @@ def dummy_data_input(to_do):
             curr = list(parties.keys()).index(party['party_id'])+1
             ts_data['completed'] = round(curr*100/len(parties))
 
+    
+    cpf_list = []
+    
     if to_do['createRandomVoters']:
 
         ts_data['completed'] = 0
@@ -345,7 +359,8 @@ def dummy_data_input(to_do):
         no_of_voters = 10
         for i in range(1, no_of_voters+1):
             # uuid = ''.join(random.choice(string.digits) for _ in range(12))
-            uuid = i
+            uuid = generate_cpf()
+            cpf_list.append(uuid)
             name = ''.join(random.choice(string.ascii_lowercase + string.ascii_uppercase) for _ in range(12))
             dob = datetime.date(random.randint(1980, 2002), random.randint(1, 12), random.randint(1, 28))
             pincode = ''.join(random.choice(string.digits) for _ in range(6))
@@ -365,7 +380,7 @@ def dummy_data_input(to_do):
             party_id = party_ids[random.randint(0,len(party_ids)-1)]
             Vote(uuid = i, vote_party_id = party_id, timestamp = curr_time).save()
             VoteBackup(uuid = i, vote_party_id = party_id, timestamp = curr_time).save()
-            voter = Voters.objects.get(uuid=i)
+            voter = Voters.objects.get(uuid=cpf_list[i-1])
             voter.vote_done = True
             voter.save()
             ts_data['completed'] = round(i*100/no_of_voters)
