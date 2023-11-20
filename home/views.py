@@ -367,6 +367,8 @@ def dummy_data_input(to_do):
             region = ''.join(random.choice(string.ascii_lowercase + string.ascii_uppercase) for _ in range(20))
             voter = Voters(uuid = uuid, name = name, dob = dob, pincode = pincode, region = region).save()
             ts_data['completed'] = round(i*100/no_of_voters)
+        
+        print("\nCPF numbers: ", cpf_list, end='\n\n')
 
     if to_do['castRandomVote'] and to_do['createRandomVoters'] and to_do['createPoliticianParties']:
 
