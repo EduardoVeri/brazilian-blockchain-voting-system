@@ -9,9 +9,19 @@ A user can cast his vote by visiting this web platform. For web server scripting
 1. Make sure you are connected to the internet.
 2. Install all the (pip) dependency packages (main packages are listed in `requirements.txt`).
 
-```pip3 install -r requirements.txt ```
+```bash
+pip3 install -r requirements.txt 
+```
 
-3. Locate `EMAIL_ADDRESS` and `EMAIL_PASSWORD` variable in `Election/settings.py` file and assign your valid credentials. (See [References](#EmailCredentials))
+3. Create a file named `config.yaml` in the same directory as `manage.py` file and add following content to it:
+
+```yaml
+   EMAIL_ADDRESS : <your email address>
+   EMAIL_PASSWORD : <your email password>
+```
+Remember to assign your valid credentials. (See [References](#EmailCredentials))
+
+
 4. Make sure email sending is allowed (while development process sending email every time is not a good idea because API allows us to send email only for limited no. of times.).
 
 
