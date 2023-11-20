@@ -44,7 +44,7 @@ def authentication(request):
             }
     except:
         details = {
-            'error': 'Invalid Aadhar, Please Enter Correct Aadhar Number!'
+            'error': 'Invalid CPF, Please Enter Correct CPF Number!'
         }
 
     return JsonResponse(details)
