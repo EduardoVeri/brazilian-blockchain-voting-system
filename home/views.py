@@ -5,13 +5,15 @@ from django.forms.models import model_to_dict
 from django.contrib import messages
 from django.conf import settings
 from django.utils import timezone
-
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from .models import Voters, PoliticalParty, Vote, VoteBackup, Block, MiningInfo
 from .methods_module import send_email_otp, generate_keys, verify_vote, send_email_private_key, vote_count
 
 from Crypto.Hash import SHA3_256
 from .merkle_tool import MerkleTools
 import datetime, json, time, random, string
+import yaml
 
 ts_data = {}
 
@@ -473,3 +475,26 @@ def verify_block(request):
 
 def track_server(request):
     return JsonResponse(ts_data)
+
+def adm(request):
+
+    return render(request, 'adm.html')
+
+def user_login(request):
+    if request.method == 'GET':
+        username = request.GET.get('username')
+        password = request.GET.get('password')
+
+        if username == config['ADMIN_USER'] and password == config['ADMIN_PASSWORD']:
+            # Aqui você implementa sua lógica de login (configuração de sessão, etc.)
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'success': False})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+def login(request):
+    return render(request, 'login.html')
+
+with open("config.yaml", "r") as yaml_file:
+    config = yaml.safe_load(yaml_file)
