@@ -9,9 +9,7 @@
 {% endblock %}
 
 {% block main_content %}
-
 <div class="authentication">
-
     <span>Enter Your CPF Number</span>
     <br>
     <div class="input-section">
@@ -21,8 +19,23 @@
     <div id="avisoNumeroInvalido" class="aviso-oculto">
         <span id="textoAviso"></span>
     </div>
-
-
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var cpf = urlParams.get('cpf');
+        var cpfField = document.getElementById('aadhar');
+        if (cpfField) {
+            cpfField.value = cpf;
+            console.log('CPF inserido no campo após a animação:', cpf);
+        } else {
+            console.error('Campo de CPF não encontrado.');
+        }
+    }, 1200); // Espera um pouco mais que a duração da animação mais longa (1s + 0.4s)
+});
+
+    </script>
+    
 {% endblock %}
