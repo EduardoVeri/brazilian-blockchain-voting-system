@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Voters, PoliticalParty, Vote, VoteBackup, Block, MiningInfo
 from .methods_module import send_email_otp, generate_keys, verify_vote, send_email_private_key, vote_count
-
+import qrcode
 from Crypto.Hash import SHA3_256
 from .merkle_tool import MerkleTools
 import datetime, json, time, random, string
@@ -288,6 +288,7 @@ def create_block():
     return data
 
 def generate_cpf():
+
     cpf = [random.randint(0, 9) for _ in range(9)]
     
     for _ in range(2):
@@ -295,11 +296,11 @@ def generate_cpf():
         cpf.append(11 - val if val > 1 else 0)
     
     cpf_number = int(''.join(map(str, cpf)))
+        
     return cpf_number
-    return '%s%s%s.%s%s%s.%s%s%s-%s%s' % tuple(cpf)
 
 def dummy_data_input(to_do):
-
+    
     ts_data['progress'] = True
     ts_data['status'] = 'Deleting current Data.'
     ts_data['completed'] = 0
@@ -366,7 +367,7 @@ def dummy_data_input(to_do):
             ts_data['completed'] = round(curr*100/len(parties))
 
     
-    cpf_list = []
+    
     
     if to_do['createRandomVoters']:
 
@@ -374,9 +375,10 @@ def dummy_data_input(to_do):
         ts_data['status'] = 'Creating voters.'
 
         # Create Voters
-        no_of_voters = 10
+        cpf_list = []
+        no_of_voters = 50
         for i in range(1, no_of_voters+1):
-            # uuid = ''.join(random.choice(string.digits) for _ in range(12))
+            random.seed(i)
             uuid = generate_cpf()
             cpf_list.append(uuid)
             name = ''.join(random.choice(string.ascii_lowercase + string.ascii_uppercase) for _ in range(12))
@@ -386,8 +388,10 @@ def dummy_data_input(to_do):
             voter = Voters(uuid = uuid, name = name, dob = dob, pincode = pincode, region = region).save()
             ts_data['completed'] = round(i*100/no_of_voters)
         
-        print("\nCPF numbers: ", cpf_list, end='\n\n')
-
+        with open('cpf.txt', 'w') as f:
+            for cpf in cpf_list:
+                f.write(str(cpf) + '\n')
+        
     if to_do['castRandomVote'] and to_do['createRandomVoters'] and to_do['createPoliticianParties']:
 
         ts_data['completed'] = 0
@@ -498,3 +502,20 @@ def login(request):
 
 with open("config.yaml", "r") as yaml_file:
     config = yaml.safe_load(yaml_file)
+
+
+def generate_qr():
+    with open("cpf.txt", "r") as cpf_file:
+        for line in cpf_file:
+            cpf = line.strip()
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4,
+            )
+            qr.add_data(cpf)
+            qr.make(fit=True)
+
+            img = qr.make_image(fill_color="black", back_color="white")
+            img.save(f"qr_codes/{cpf}.png")
