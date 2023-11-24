@@ -110,6 +110,7 @@ def get_parties(request):
         
 
         request.session['public-key'] = public_key
+        request.session['private-key'] = private_key
 
         parties = list(PoliticalParty.objects.all())
         parties = [model_to_dict(party) for party in parties]
@@ -128,7 +129,8 @@ def create_vote(request):
 
     uuid = request.session['uuid']
 
-    private_key = request.GET.get('private-key')
+    private_key = request.session['private-key']
+    #private_key = request.GET.get('private-key')
     public_key = request.session['public-key']
 
     selected_party_id = request.GET.get('selected-party-id')
