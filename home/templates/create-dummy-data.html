@@ -4,7 +4,6 @@
 
 {% block head %}
 <style>
-
 .curr-status {
     color: rgb(143, 72, 184);
 }
@@ -81,114 +80,219 @@ div.completed {
     font-size: 14px;
 }
 
+.manual-add-voter-wrapper {
+    background-color: rgba(247, 247, 247, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+}
 
+.manual-add-voter-wrapper h2 {
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
 
+.manual-add-voter-wrapper form {
+    display: flex;
+    flex-direction: column;
+}
+
+.manual-add-voter-wrapper label {
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #555;
+}
+
+.manual-add-voter-wrapper input[type="text"],
+.manual-add-voter-wrapper input[type="number"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.manual-add-voter-wrapper input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.manual-add-voter-wrapper input[type="submit"]:hover {
+    background-color: #45a049;
+}
 </style>
-    <script src="{% static 'scripts/base.js' %}"></script>
-    <script>
-        $(document).ready(function(){
-            hide_loading();
+<script src="{% static 'scripts/base.js' %}"></script>
+<script>
+    $(document).ready(function(){
+        hide_loading();
 
-            $('.submit-button').click(function(){
-                var createRandomVoters = $('#createRandomVoters').is(':checked');
-                var createPoliticianParties = $('#createPoliticianParties').is(':checked');
-                var castRandomVote = $('#castRandomVote').is(':checked');
+        $('.submit-button').click(function(){
+            var createRandomVoters = $('#createRandomVoters').is(':checked');
+            var createPoliticianParties = $('#createPoliticianParties').is(':checked');
+            var castRandomVote = $('#castRandomVote').is(':checked');
 
-                if(castRandomVote) {
-                    if(createPoliticianParties && createRandomVoters){}
-                    else {
-                        alert('Votes can not be casted without complete database!');
-                        return;
-                    }
+            if(castRandomVote) {
+                if(createPoliticianParties && createRandomVoters){}
+                else {
+                    alert('Votes can not be casted without complete database!');
+                    return;
                 }
+            }
 
-                startCreatingDummyData({
-                    'createRandomVoters':createRandomVoters,
-                    'createPoliticianParties':createPoliticianParties,
-                    'castRandomVote':castRandomVote
-                });
+            startCreatingDummyData({
+                'createRandomVoters':createRandomVoters,
+                'createPoliticianParties':createPoliticianParties,
+                'castRandomVote':castRandomVote
             });
+        });
 
-            function startCreatingDummyData(to_do) {
+        $('.submit-form-button').click(function(){
+            var voterName = $('#voterName').val();
+            var voterID = $('#voterID').val();
+            var voterAge = $('#voterAge').val();
+            var voterAddress = $('#voterAddress').val();
 
-                html = `
-                    <div class="curr-status">Creating Dummy Data.</div>
-                    <div class="complete-status">
-                        <div class="completed"></div>
-                    </div>
-                `
-                show_loading('Creating Dummy Data...<br>'+html);
-                showAlert('Creating Dummy Data.', 'rgba(201, 136, 255, 0.3)', 'rgb(102, 0, 128)');
+            if(voterName && voterID) {
                 $.ajax({
                     type: "GET",
-                    url: "/create-dummy-data/",
-                    data: to_do,
+                    url: "/add-voter/",
+                    data: {
+                        'voter_name':voterName,
+                        'voter_id':voterID,
+                        'voter_age':'2001-12-18',
+                        'voter_address':'address',
+                        'pincode': '000000'
+                    },
                     success: function(data){
                         if(data.success) {
-                            $('.completed').animate({'width':100+'%'}, {duration: 300});
-                            $('.completed').html(100 +'% completed');
-                            showAlert('Dummy Data has been created.', 'rgba(201, 136, 255, 0.3)', 'rgb(102, 0, 128)');
-                            $('.curr-status').html('Dummy Data has been created.<br>You are being redirected to home.');
-                            setTimeout(function(){
-                                location.href = '/'
-                            }, 2000);
+                            showAlert('Voter has been added.', 'rgba(201, 136, 255, 0.3)', 'rgb(102, 0, 128)');
+                            $('#voterName').val('');
+                            $('#voterID').val('');
+                            $('#voterAge').val('');
+                            $('#voterAddress').val('');
                         }
                         else{
                             showAlert('Something went wrong.', 'rgba(201, 136, 255, 0.3)', 'rgb(102, 0, 128)');
-                            $('.curr-status').html('Something went wrong.<br>You are being redirected to home.');
-                            setTimeout(function(){
-                                location.href = '/'
-                            }, 5000);
-                        }
-                    }
-                });
-
-                track_server();
-
-            }
-
-            function track_server(){
-
-                $.ajax({
-                    type: "GET",
-                    url: "/track-server/",
-                    success: function( data ){
-
-                        if(data.progress){
-
-                            $('.curr-status').html(data.status);
-                            $('.completed').animate({'width':data.completed+'%'}, {duration: 300});
-                            $('.completed').html(data.completed +'% completed');
-
-                            setTimeout(function(){
-                                track_server();
-                            }, 500);
                         }
                     }
                 });
             }
-
+            else{
+                showAlert('Please fill all the fields.', 'rgba(201, 136, 255, 0.3)', 'rgb(102, 0, 128)');
+            }
+            
         });
-    </script>
+
+        function startCreatingDummyData(to_do) {
+
+            html = `
+                <div class="curr-status">Creating Dummy Data.</div>
+                <div class="complete-status">
+                    <div class="completed"></div>
+                </div>
+            `
+            show_loading('Creating Dummy Data...<br>'+html);
+            showAlert('Creating Dummy Data.', 'rgba(201, 136, 255, 0.3)', 'rgb(102, 0, 128)');
+            $.ajax({
+                type: "GET",
+                url: "/create-dummy-data/",
+                data: to_do,
+                success: function(data){
+                    if(data.success) {
+                        $('.completed').animate({'width':100+'%'}, {duration: 300});
+                        $('.completed').html(100 +'% completed');
+                        showAlert('Dummy Data has been created.', 'rgba(201, 136, 255, 0.3)', 'rgb(102, 0, 128)');
+                        $('.curr-status').html('Dummy Data has been created.<br>You are being redirected to home.');
+                        setTimeout(function(){
+                            location.href = '/'
+                        }, 2000);
+                    }
+                    else{
+                        showAlert('Something went wrong.', 'rgba(201, 136, 255, 0.3)', 'rgb(102, 0, 128)');
+                        $('.curr-status').html('Something went wrong.<br>You are being redirected to home.');
+                        setTimeout(function(){
+                            location.href = '/'
+                        }, 5000);
+                    }
+                }
+            });
+
+            track_server();
+
+        }
+
+        function track_server(){
+
+            $.ajax({
+                type: "GET",
+                url: "/track-server/",
+                success: function( data ){
+
+                    if(data.progress){
+
+                        $('.curr-status').html(data.status);
+                        $('.completed').animate({'width':data.completed+'%'}, {duration: 300});
+                        $('.completed').html(data.completed +'% completed');
+
+                        setTimeout(function(){
+                            track_server();
+                        }, 500);
+                    }
+                }
+            });
+        }
+
+    });
+</script>
 {% endblock %}
 
 {% block main_content %}
+<section class="create-data-wrapper" >
+    <div class="create-data-wrapper" >
+        <div>
+            <input type="checkbox" id="createRandomVoters" checked>
+            <span>Create Random Voters</span>
+        </div>
+        <div>
+            <input type="checkbox" id="createPoliticianParties" checked>
+            <span>Create Politician Parties</span>
+        </div>
+        <div>
+            <input type="checkbox" id="castRandomVote" checked>
+            <span>Cast Vote Randomly</span>
+        </div>
+        <div class="submit-button">Create Dummy Data</div>
+        <div class="danger-note">NOTE: All previous data will be deleted. Uncheck all, if you want to only delete old data.</div>
+    </div>
 
-<div class="create-data-wrapper">
-    <div>
-        <input type="checkbox" id="createRandomVoters" checked>
-        <span>Create Random Voters</span>
+    <div class="manual-add-voter-wrapper" >
+        <h2>Add New Voter</h2>
+        <form>
+            {% csrf_token %}
+            <div style="display:flex; flex-direction: column;">
+                <label for="voterName">Voter Name:</label>
+                <input type="text" id="voterName" name="voter_name" required>
+            </div>
+            <div style="display:flex; flex-direction: column;">
+                <label for="voterID">Voter ID:</label>
+                <input type="text" id="voterID" name="voter_id" required>
+            </div>
+            <div>
+                <input type="button" class="submit-form-button" value="Add Voter">
+            </div>
+        </form>
     </div>
-    <div>
-        <input type="checkbox" id="createPoliticianParties" checked>
-        <span>Create Politician Parties</span>
-    </div>
-    <div>
-        <input type="checkbox" id="castRandomVote" checked>
-        <span>Cast Vote Randomly</span>
-    </div>
-    <div class="submit-button">Create Dummy Data</div>
-    <div class="danger-note">NOTE: All previous data will be deleted. Uncheck all, if you want to only delete old data.</div>
-</div>
+</section>
 
 {% endblock %}

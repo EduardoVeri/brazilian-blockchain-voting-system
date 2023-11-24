@@ -22,4 +22,5 @@ urlpatterns = [
     path('sync-block/', views.sync_block, name='sync-block'),
     path('verify-block/', views.verify_block, name='verify-block'),
     path('track-server/', views.track_server, name='track-server'),
+    path('add-voter/', views.add_voter, name='add-voter'),
 ]

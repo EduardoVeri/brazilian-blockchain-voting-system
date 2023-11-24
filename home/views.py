@@ -496,6 +496,22 @@ def user_login(request):
             return JsonResponse({'success': False})
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
+            
+def add_voter(request):
+    # Get voter details from request
+    name = request.GET.get('voter_name')
+    uuid = request.GET.get('voter_id')
+    dob = datetime.date(random.randint(1980, 2002), random.randint(1, 12), random.randint(1, 28))
+    pincode = ''.join(random.choice(string.digits) for _ in range(6))
+    region = ''.join(random.choice(string.ascii_lowercase + string.ascii_uppercase) for _ in range(20))
+            
+    # Create a new Voter object
+    voter = Voters(uuid = uuid, name = name, dob = dob, pincode = pincode, region = region)
+
+    # Save the voter object to the database
+    voter.save()
+
+    return JsonResponse({'success': True})
 
 def login(request):
     return render(request, 'login.html')
