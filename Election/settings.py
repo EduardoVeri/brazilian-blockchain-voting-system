@@ -14,7 +14,7 @@ import os
 import yaml
 
 # Open the config file and save it to config variable
-with open("config.yaml", "r") as yaml_file:
+with open("/home/EduardoVF/brazilian-blockchain-voting-system", "r") as yaml_file:
     config = yaml.safe_load(yaml_file)
 
 
