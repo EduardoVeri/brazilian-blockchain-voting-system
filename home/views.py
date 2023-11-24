@@ -518,7 +518,7 @@ def add_voter(request):
 def login(request):
     return render(request, 'login.html')
 
-with open("/home/EduardoVF/brazilian-blockchain-voting-system", "r") as yaml_file:
+with open("/home/EduardoVF/brazilian-blockchain-voting-system/config.yaml", "r") as yaml_file:
     config = yaml.safe_load(yaml_file)
 
 
