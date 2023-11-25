@@ -33,6 +33,7 @@ DEBUG = config['DEBUG']
 
 ALLOWED_HOSTS = [config['ALLOWED_HOST']]
 
+LOGIN_URL = '/'
 
 # Application definition
 
