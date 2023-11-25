@@ -60,10 +60,10 @@ def authentication(request):
 def send_otp(request):
     email_input = request.GET.get('email-id')
 
-    if(settings.DEBUG):
-        [success, result] = [True, '0']
-    else:
+    if settings.EMAIL:
         [success, result] = send_email_otp(email_input)
+    else:
+        [success, result] = [True, '0']
     
     
     json = {'success': success}
@@ -80,7 +80,7 @@ def send_otp(request):
 def verify_otp(request):
     json = {'success': False}
     
-    if(settings.DEBUG):
+    if not settings.EMAIL:
         voter = Voters.objects.get(uuid = request.session['uuid'])
         voter.email = 'devmode@gmail.com'
         voter.save()
@@ -108,14 +108,14 @@ def get_parties(request):
         private_key, public_key = generate_keys()
 
         # If in dev mode then print private key
-        if(settings.DEBUG):
-           print(private_key) 
-           request.session['private-key'] = private_key
-        else:
+        if(settings.EMAIL):
             send_email_private_key(request.session['email-id'], private_key)
+        else:
+            request.session['private-key'] = private_key
+            print(private_key) 
         
 
-        request.session['public-key'] = public_key    
+        request.session['public-key'] = public_key
 
         parties = list(PoliticalParty.objects.all())
         parties = [model_to_dict(party) for party in parties]
@@ -134,10 +134,10 @@ def create_vote(request):
 
     uuid = request.session['uuid']
 
-    if(settings.DEBUG):
-        private_key = request.session['private-key']
-    else:
+    if(settings.EMAIL):
         private_key = request.GET.get('private-key')
+    else:
+        private_key = request.session['private-key']
     public_key = request.session['public-key']
 
     selected_party_id = request.GET.get('selected-party-id')
@@ -496,10 +496,6 @@ def add_voter(request):
     # Get voter details from request
     name = request.GET.get('voter_name')
     uuid = request.GET.get('voter_id')
-    dob = datetime.date(random.randint(1980, 2002), random.randint(1, 12), random.randint(1, 28))
-    pincode = ''.join(random.choice(string.digits) for _ in range(6))
-    region = ''.join(random.choice(string.ascii_lowercase + string.ascii_uppercase) for _ in range(20))
-            
     # Create a new Voter object
     voter = Voters(uuid = uuid, name = name, dob = dob, pincode = pincode, region = region)
 
@@ -507,3 +503,4 @@ def add_voter(request):
     voter.save()
 
     return JsonResponse({'success': True})
+
