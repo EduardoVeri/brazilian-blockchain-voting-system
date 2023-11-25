@@ -13,14 +13,14 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import yaml
 
-# Open the config file and save it to config variable
-with open("/home/EduardoVF/brazilian-blockchain-voting-system/config.yaml", "r") as yaml_file:
-    config = yaml.safe_load(yaml_file)
-
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
+# Open the config file and save it to config variable
+with open(os.path.join(BASE_DIR, 'config.yaml'), "r") as yaml_file:
+    config = yaml.safe_load(yaml_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -125,6 +125,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
 STATIC_URL = '/static/'
 
 EMAIL_ADDRESS = config['EMAIL_ADDRESS']
