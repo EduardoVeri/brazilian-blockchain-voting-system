@@ -519,25 +519,3 @@ def add_voter(request):
 
     return JsonResponse({'success': True})
 
-def login(request):
-    return render(request, 'login.html')
-
-with open("/home/EduardoVF/brazilian-blockchain-voting-system/config.yaml", "r") as yaml_file:
-    config = yaml.safe_load(yaml_file)
-
-
-def generate_qr():
-    with open("cpf.txt", "r") as cpf_file:
-        for line in cpf_file:
-            cpf = line.strip()
-            qr = qrcode.QRCode(
-                version=1,
-                error_correction=qrcode.constants.ERROR_CORRECT_L,
-                box_size=10,
-                border=4,
-            )
-            qr.add_data(cpf)
-            qr.make(fit=True)
-
-            img = qr.make_image(fill_color="black", back_color="white")
-            img.save(f"qr_codes/{cpf}.png")
