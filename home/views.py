@@ -110,12 +110,12 @@ def get_parties(request):
         # If in dev mode then print private key
         if(settings.DEBUG):
            print(private_key) 
+           request.session['private-key'] = private_key
         else:
             send_email_private_key(request.session['email-id'], private_key)
         
 
-        request.session['public-key'] = public_key
-        request.session['private-key'] = private_key
+        request.session['public-key'] = public_key    
 
         parties = list(PoliticalParty.objects.all())
         parties = [model_to_dict(party) for party in parties]
@@ -134,8 +134,10 @@ def create_vote(request):
 
     uuid = request.session['uuid']
 
-    private_key = request.session['private-key']
-    #private_key = request.GET.get('private-key')
+    if(settings.DEBUG):
+        private_key = request.session['private-key']
+    else:
+        private_key = request.GET.get('private-key')
     public_key = request.session['public-key']
 
     selected_party_id = request.GET.get('selected-party-id')
@@ -489,19 +491,6 @@ def verify_block(request):
 
 def track_server(request):
     return JsonResponse(ts_data)
-
-def user_login(request):
-    if request.method == 'GET':
-        username = request.GET.get('username')
-        password = request.GET.get('password')
-
-        if username == config['ADMIN_USER'] and password == config['ADMIN_PASSWORD']:
-            # Aqui você implementa sua lógica de login (configuração de sessão, etc.)
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'success': False})
-
-    return JsonResponse({'error': 'Invalid request'}, status=400)
             
 def add_voter(request):
     # Get voter details from request
@@ -518,26 +507,3 @@ def add_voter(request):
     voter.save()
 
     return JsonResponse({'success': True})
-
-def login(request):
-    return render(request, 'login.html')
-
-with open("/home/EduardoVF/brazilian-blockchain-voting-system/config.yaml", "r") as yaml_file:
-    config = yaml.safe_load(yaml_file)
-
-
-def generate_qr():
-    with open("cpf.txt", "r") as cpf_file:
-        for line in cpf_file:
-            cpf = line.strip()
-            qr = qrcode.QRCode(
-                version=1,
-                error_correction=qrcode.constants.ERROR_CORRECT_L,
-                box_size=10,
-                border=4,
-            )
-            qr.add_data(cpf)
-            qr.make(fit=True)
-
-            img = qr.make_image(fill_color="black", back_color="white")
-            img.save(f"qr_codes/{cpf}.png")
