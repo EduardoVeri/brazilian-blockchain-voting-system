@@ -14,6 +14,8 @@ from Crypto.Hash import SHA3_256
 from .merkle_tool import MerkleTools
 import datetime, json, time, random, string
 import yaml
+from django.contrib.auth.decorators import login_required, user_passes_test
+
 
 ts_data = {}
 
@@ -22,6 +24,9 @@ ts_data = {}
 # -------------- Home (First time loading) --------------
 def home(request):
     return render(request, 'home.html')
+
+def is_admin(user):
+    return user.is_authenticated and user.is_superuser
 
 # --------------- Authentication -------------------
 def authentication(request):
@@ -158,7 +163,10 @@ def create_vote(request):
 
     return JsonResponse(context)
 
+
 # -------------- create Dummy Data ------------------
+@login_required
+@user_passes_test(is_admin)
 def create_dummy_data(request):
     to_do = {
         'createRandomVoters': json.loads(request.GET.get('createRandomVoters')) if request.GET.get('createRandomVoters') else None,
@@ -481,10 +489,6 @@ def verify_block(request):
 
 def track_server(request):
     return JsonResponse(ts_data)
-
-def adm(request):
-
-    return render(request, 'adm.html')
 
 def user_login(request):
     if request.method == 'GET':
