@@ -128,6 +128,7 @@ USE_TZ = True
 PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
 STATIC_URL = '/static/'
 
+EMAIL = config['EMAIL']
 EMAIL_ADDRESS = config['EMAIL_ADDRESS']
 EMAIL_PASSWORD = config['EMAIL_PASSWORD']
 TRANSACTIONS_PER_BLOCK = 1
