@@ -2,3 +2,4 @@ __pycache__
 config.yaml
 staticfiles
 cpf.txt
+QR/media
