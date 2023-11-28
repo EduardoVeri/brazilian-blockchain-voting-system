@@ -397,7 +397,8 @@ def dummy_data_input(to_do):
             dob = datetime.date(random.randint(1980, 2002), random.randint(1, 12), random.randint(1, 28))
             pincode = ''.join(random.choice(string.digits) for _ in range(6))
             region = ''.join(random.choice(string.ascii_lowercase + string.ascii_uppercase) for _ in range(20))
-            voter = Voters(uuid = uuid, name = name, dob = dob, pincode = pincode, region = region).save()
+            prof_pic = 'https://cdn.create.vista.com/api/media/small/374472340/stock-vector-user-sign-illustration-white-icon-gray-dropped-limitless-shadow-green'
+            voter = Voters(uuid = uuid, name = name, dob = dob, pincode = pincode, region = region, profile_pic = prof_pic).save()
             ts_data['completed'] = round(i*100/no_of_voters)
         
         with open('cpf.txt', 'w') as f:
