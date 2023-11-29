@@ -51,7 +51,7 @@ def authentication(request):
             }
     except:
         details = {
-            'error': 'Invalid CPF, Please Enter Correct CPF Number!'
+            'error': 'Invalid ID, Please Enter Correct ID Number!'
         }
 
     return JsonResponse(details)

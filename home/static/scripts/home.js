@@ -1,7 +1,7 @@
 $(document).ready(function(){
     hide_loading();
     showAlert(
-        'Please Enter your CPF Number to Authenticate yourself in order to cast your vote.',
+        'Please Enter your ID Number to Authenticate yourself in order to cast your vote.',
         'rgba(201, 136, 255, 0.3)', 'rgb(102, 0, 128)');
     setTimeout(function(){
         $('.loading-div').css({
@@ -33,7 +33,7 @@ $(document).ready(function(){
             hideCpfAlert();
         }
         else {
-            showCpfAlert("Invalid CPF. Please enter a valid CPF Number.");
+            showCpfAlert("Invalid ID. Please enter a valid ID Number.");
         }
     });
 })
